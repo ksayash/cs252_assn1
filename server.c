@@ -4,19 +4,15 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include<libgen.h>
+#include<unistd.h>
 
 int main(){
   int welcomeSocket, newSocket;
   char buffer[1024];
   int n;
-  char* local_file = "/images/car1.jpeg";
-	char* ts2 = strdup(local_file);
-
-	char* dir = dirname(ts2);
-	
-	char* filename = basename(ts2);
-	printf("%s\n",dir);
+  char cwd[128];
+  getcwd(cwd, sizeof(cwd));
+  printf("%s\n",cwd );
   int num_cars=0;
   int num_cats=0;
   int num_trucks=0;
@@ -92,7 +88,9 @@ int main(){
    			strcat(html,"<tr>");
    		}
    		strcat(html,"<td>");
-   		strcat(html,"<img src=\"./images/dog");
+   		strcat(html,"<img src=\"");
+   		strcat(html,cwd);
+   		strcat(html,"/images/dog");
    		char temp[3];
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
@@ -106,12 +104,14 @@ int main(){
    			strcat(html,"<tr>");
    		}
    		strcat(html,"<td>");
-   		strcat(html,"<img src=\"./images/cat");
+   		strcat(html,"<img src=\"");
+   		strcat(html,cwd);
+   		strcat(html,"/images/cat");
    		char temp[3];
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
-   		if(i==num_dogs-1){
+   		if(i==num_cats-1){
    			strcat(html,"</tr>");
    		}
    	}
@@ -120,12 +120,14 @@ int main(){
    			strcat(html,"<tr>");
    		}
    		strcat(html,"<td>");
-   		strcat(html,"<img src=\"./images/car");
+   		strcat(html,"<img src=\"");
+   		strcat(html,cwd);
+   		strcat(html,"/images/car");
    		char temp[3];
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
-   		if(i==num_dogs-1){
+   		if(i==num_cars-1){
    			strcat(html,"</tr>");
    		}
    	}
@@ -134,18 +136,24 @@ int main(){
    			strcat(html,"<tr>");
    		}
    		strcat(html,"<td>");
-   		strcat(html,"<img src=\"./images/truck");
+   		strcat(html,"<img src=\"");
+   		strcat(html,cwd);
+   		strcat(html,"/images/truck");
    		char temp[3];
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
-   		if(i==num_dogs-1){
+   		if(i==num_trucks-1){
    			strcat(html,"</tr>");
    		}
    	}
+   	strcat(html,"</table></body></html>");
    	n = send(newSocket,html,strlen(html),0);
-   	bzero(buffer,256);
-
+   	strcpy(html,"<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1><table>");
+   	num_dogs =0;
+   	num_trucks =0;
+   	num_cats =0;
+   	num_cars=0;
 }
   return 0;
 }

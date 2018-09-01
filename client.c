@@ -8,13 +8,13 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
-
+#include <stdlib.h>
 int main(){
   int clientSocket;
   int n;
   char buffer[1024];
   char html[4096];
-  
+  FILE* fp;
   struct sockaddr_in serverAddr;
   socklen_t addr_size;
 
@@ -47,8 +47,18 @@ int main(){
   n = send(clientSocket, buffer, strlen(buffer),0);
   bzero(buffer,256);
   n = recv(clientSocket, html,4096,0);
+  printf("%s\n",html);
+  fp = fopen("index.html", "w");
+   if (fp == NULL) 
+    {
+      printf("File not found!\n");
+      return 0;
+    }
   printf("%s\n",html );
-   
+  fwrite(html, sizeof(char), strlen(html), fp);
+  fclose(fp);
+  system("google-chrome index.html");
+  system("rm index.html");
    
   return 0;
 }
