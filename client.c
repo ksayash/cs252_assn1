@@ -13,6 +13,8 @@ int main(){
   int clientSocket;
   int n;
   char buffer[1024];
+  char html[4096];
+  
   struct sockaddr_in serverAddr;
   socklen_t addr_size;
 
@@ -44,6 +46,8 @@ int main(){
   printf("%s\n", buffer);
   n = send(clientSocket, buffer, strlen(buffer),0);
   bzero(buffer,256);
+  n = recv(clientSocket, html,4096,0);
+  printf("%s\n",html );
    
    
   return 0;

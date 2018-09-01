@@ -4,11 +4,19 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include<libgen.h>
 
 int main(){
   int welcomeSocket, newSocket;
   char buffer[1024];
   int n;
+  char* local_file = "/images/car1.jpeg";
+	char* ts2 = strdup(local_file);
+
+	char* dir = dirname(ts2);
+	
+	char* filename = basename(ts2);
+	printf("%s\n",dir);
   int num_cars=0;
   int num_cats=0;
   int num_trucks=0;
@@ -16,8 +24,7 @@ int main(){
   char* token;
   char prev_token[20];
   const char delm[2] = " ";
-  char html_start[] = "<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1>";
-  char html_pics[2048];
+  char html[4096] = "<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1><table>";
   struct sockaddr_in serverAddr;
   struct sockaddr_storage serverStorage;
   socklen_t addr_size;
@@ -79,8 +86,64 @@ int main(){
       }
       
    	}
-   	
-   	n = send(newSocket,html_start,strlen(html_start),0);
+
+   	for(int i=0;i<num_dogs;i++){
+   		if(i==0){
+   			strcat(html,"<tr>");
+   		}
+   		strcat(html,"<td>");
+   		strcat(html,"<img src=\"./images/dog");
+   		char temp[3];
+   		sprintf(temp, "%d", i+1);
+   		strcat(html,temp);
+   		strcat(html,".jpeg\"></td>");
+   		if(i==num_dogs-1){
+   			strcat(html,"</tr>");
+   		}
+   	}
+   	for(int i=0;i<num_cats;i++){
+   		if(i==0){
+   			strcat(html,"<tr>");
+   		}
+   		strcat(html,"<td>");
+   		strcat(html,"<img src=\"./images/cat");
+   		char temp[3];
+   		sprintf(temp, "%d", i+1);
+   		strcat(html,temp);
+   		strcat(html,".jpeg\"></td>");
+   		if(i==num_dogs-1){
+   			strcat(html,"</tr>");
+   		}
+   	}
+   	for(int i=0;i<num_cars;i++){
+   		if(i==0){
+   			strcat(html,"<tr>");
+   		}
+   		strcat(html,"<td>");
+   		strcat(html,"<img src=\"./images/car");
+   		char temp[3];
+   		sprintf(temp, "%d", i+1);
+   		strcat(html,temp);
+   		strcat(html,".jpeg\"></td>");
+   		if(i==num_dogs-1){
+   			strcat(html,"</tr>");
+   		}
+   	}
+   	for(int i=0;i<num_trucks;i++){
+   		if(i==0){
+   			strcat(html,"<tr>");
+   		}
+   		strcat(html,"<td>");
+   		strcat(html,"<img src=\"./images/truck");
+   		char temp[3];
+   		sprintf(temp, "%d", i+1);
+   		strcat(html,temp);
+   		strcat(html,".jpeg\"></td>");
+   		if(i==num_dogs-1){
+   			strcat(html,"</tr>");
+   		}
+   	}
+   	n = send(newSocket,html,strlen(html),0);
    	bzero(buffer,256);
 
 }
