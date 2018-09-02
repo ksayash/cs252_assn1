@@ -9,6 +9,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
+#include <unistd.h>
 int main(){
   int clientSocket;
   int n;
@@ -49,7 +50,7 @@ int main(){
   n = recv(clientSocket, html,4096,0);
   printf("%s\n",html);
   fp = fopen("index.html", "w");
-   if (fp == NULL) 
+   if (fp == NULL)
     {
       printf("File not found!\n");
       return 0;
@@ -57,8 +58,9 @@ int main(){
   printf("%s\n",html );
   fwrite(html, sizeof(char), strlen(html), fp);
   fclose(fp);
-  system("google-chrome index.html");
+  system("x-www-browser index.html");
+  sleep(1);
   system("rm index.html");
-   
+
   return 0;
 }

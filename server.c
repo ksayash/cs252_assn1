@@ -21,6 +21,7 @@ int main(){
   char prev_token[20];
   const char delm[2] = " ";
   char html[4096] = "<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1><table>";
+  char msg[1024] = "";
   struct sockaddr_in serverAddr;
   struct sockaddr_storage serverStorage;
   socklen_t addr_size;
@@ -50,7 +51,7 @@ int main(){
 
   /*---- Accept call creates a new socket for the incoming connection ----*/
   addr_size = sizeof serverStorage;
-  
+
   while(1){
     bzero(buffer,256);
     newSocket = accept(welcomeSocket, (struct sockaddr *) &serverStorage, &addr_size);
@@ -59,6 +60,7 @@ int main(){
   	n = recv( newSocket,buffer,255,0 );
   	token = strtok(buffer,delm);
   	strcpy(prev_token,token);
+    int flag = 0;
   	while( token != NULL ) {
       token = strtok(NULL, delm);
       if(token != NULL){
@@ -78,15 +80,20 @@ int main(){
       		printf("cars4\n");
       		num_trucks = prev_token[0]-'0';
       	}
-      	strcpy(prev_token,token);	
+      	strcpy(prev_token,token);
       }
-      
+
    	}
 
    	for(int i=0;i<num_dogs;i++){
    		if(i==0){
    			strcat(html,"<tr>");
    		}
+        if(i > 3){
+            strcat(html,"</tr>");
+            strcat(msg, "<h3>Only 4 dog images are available, you requested more. Showing all four images. </h3> <br>");
+            break;
+        }
    		strcat(html,"<td>");
    		strcat(html,"<img src=\"");
    		strcat(html,cwd);
@@ -95,14 +102,21 @@ int main(){
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
+
    		if(i==num_dogs-1){
    			strcat(html,"</tr>");
    		}
+        flag = 1;
    	}
    	for(int i=0;i<num_cats;i++){
    		if(i==0){
    			strcat(html,"<tr>");
    		}
+        if(i > 3){
+            strcat(html,"</tr>");
+            strcat(msg, "<h3>Only 4 cat images are available, you requested more. Showing all four images. </h3> <br>");
+            break;
+        }
    		strcat(html,"<td>");
    		strcat(html,"<img src=\"");
    		strcat(html,cwd);
@@ -111,14 +125,21 @@ int main(){
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
+
    		if(i==num_cats-1){
    			strcat(html,"</tr>");
    		}
+        flag = 1;
    	}
    	for(int i=0;i<num_cars;i++){
    		if(i==0){
    			strcat(html,"<tr>");
    		}
+        if(i > 3){
+            strcat(html,"</tr>");
+            strcat(msg, "<h3>Only 4 car images are available, you requested more. Showing all four images. </h3> <br>");
+            break;
+        }
    		strcat(html,"<td>");
    		strcat(html,"<img src=\"");
    		strcat(html,cwd);
@@ -127,14 +148,21 @@ int main(){
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
+
    		if(i==num_cars-1){
    			strcat(html,"</tr>");
    		}
+        flag = 1;
    	}
    	for(int i=0;i<num_trucks;i++){
    		if(i==0){
    			strcat(html,"<tr>");
    		}
+        if(i > 3){
+            strcat(html,"</tr>");
+            strcat(msg, "<h3>Only 4 truck images are available, you requested more. Showing all four images. </h3> <br>");
+            break;
+        }
    		strcat(html,"<td>");
    		strcat(html,"<img src=\"");
    		strcat(html,cwd);
@@ -143,11 +171,20 @@ int main(){
    		sprintf(temp, "%d", i+1);
    		strcat(html,temp);
    		strcat(html,".jpeg\"></td>");
+
    		if(i==num_trucks-1){
    			strcat(html,"</tr>");
    		}
+        flag = 1;
    	}
-   	strcat(html,"</table></body></html>");
+
+   	strcat(html,"</table>");
+    strcat(html,msg);
+    strcat(html,"</body></html>");
+
+    if(flag == 0){
+        strcpy(html,"<!DOCTYPE html><html><body><h1> Query doesn't have any returns. </h1></html></body>");
+    }
    	n = send(newSocket,html,strlen(html),0);
    	strcpy(html,"<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1><table>");
    	num_dogs =0;
