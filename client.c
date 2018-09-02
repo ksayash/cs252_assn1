@@ -44,18 +44,15 @@ int main(){
   printf("please enter the Query\n");
   bzero(buffer,256);
   scanf("%[^\n]s",buffer );
-  printf("%s\n", buffer);
   n = send(clientSocket, buffer, strlen(buffer),0);
   bzero(buffer,256);
   n = recv(clientSocket, html,4096,0);
-  printf("%s\n",html);
   fp = fopen("index.html", "w");
    if (fp == NULL)
     {
       printf("File not found!\n");
       return 0;
     }
-  printf("%s\n",html );
   fwrite(html, sizeof(char), strlen(html), fp);
   fclose(fp);
   system("x-www-browser index.html");

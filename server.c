@@ -12,7 +12,6 @@ int main(){
   int n;
   char cwd[128];
   getcwd(cwd, sizeof(cwd));
-  printf("%s\n",cwd );
   int num_cars=0;
   int num_cats=0;
   int num_trucks=0;
@@ -65,19 +64,15 @@ int main(){
       token = strtok(NULL, delm);
       if(token != NULL){
       	if((strcmp(token,"cars")==0)||(strcmp(token,"car")==0)){
-      		printf("cars\n");
       		num_cars = (prev_token[0]-'0');
       	}
       	if((strcmp(token,"dogs")==0) || (strcmp(token,"dog")==0)){
-      		printf("cars2\n");
       		num_dogs = prev_token[0]-'0';
       	}
       	if((strcmp(token,"cats")==0) || (strcmp(token,"cat")==0)){
-      		printf("cars3\n");
       		num_cats = prev_token[0]-'0';
       	}
       	if((strcmp(token,"trucks")==0) || (strcmp(token,"truck")==0)){
-      		printf("cars4\n");
       		num_trucks = prev_token[0]-'0';
       	}
       	strcpy(prev_token,token);
