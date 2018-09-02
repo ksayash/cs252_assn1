@@ -12,6 +12,8 @@ int main(){
   int n;
   char cwd[128];
   getcwd(cwd, sizeof(cwd));
+  char path_name[256];
+  strcpy(path_name,cwd);
   int num_cars=0;
   int num_cats=0;
   int num_trucks=0;
@@ -19,7 +21,6 @@ int main(){
   char* token;
   char prev_token[20];
   const char delm[2] = " ";
-  char html[4096] = "<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1><table>";
   char msg[1024] = "";
   struct sockaddr_in serverAddr;
   struct sockaddr_storage serverStorage;
@@ -50,142 +51,155 @@ int main(){
 
   /*---- Accept call creates a new socket for the incoming connection ----*/
   addr_size = sizeof serverStorage;
-
+  char sdbuf[512];
   while(1){
+    bzero(sdbuf,512);
     bzero(buffer,256);
     newSocket = accept(welcomeSocket, (struct sockaddr *) &serverStorage, &addr_size);
 
   /*---- Send message to the socket of the incoming connection ----*/
-  	n = recv( newSocket,buffer,255,0 );
-  	token = strtok(buffer,delm);
-  	strcpy(prev_token,token);
+    n = recv( newSocket,buffer,255,0 );
+    token = strtok(buffer,delm);
+    strcpy(prev_token,token);
     int flag = 0;
-  	while( token != NULL ) {
+    while( token != NULL ) {
       token = strtok(NULL, delm);
       if(token != NULL){
-      	if((strcmp(token,"cars")==0)||(strcmp(token,"car")==0)){
-      		num_cars = (prev_token[0]-'0');
-      	}
-      	if((strcmp(token,"dogs")==0) || (strcmp(token,"dog")==0)){
-      		num_dogs = prev_token[0]-'0';
-      	}
-      	if((strcmp(token,"cats")==0) || (strcmp(token,"cat")==0)){
-      		num_cats = prev_token[0]-'0';
-      	}
-      	if((strcmp(token,"trucks")==0) || (strcmp(token,"truck")==0)){
-      		num_trucks = prev_token[0]-'0';
-      	}
-      	strcpy(prev_token,token);
+        if((strcmp(token,"cars")==0)||(strcmp(token,"car")==0)){
+          num_cars = (prev_token[0]-'0');
+        }
+        if((strcmp(token,"dogs")==0) || (strcmp(token,"dog")==0)){
+          num_dogs = prev_token[0]-'0';
+        }
+        if((strcmp(token,"cats")==0) || (strcmp(token,"cat")==0)){
+          num_cats = prev_token[0]-'0';
+        }
+        if((strcmp(token,"trucks")==0) || (strcmp(token,"truck")==0)){
+          num_trucks = prev_token[0]-'0';
+        }
+        strcpy(prev_token,token);
       }
 
-   	}
-
-   	for(int i=0;i<num_dogs;i++){
-   		if(i==0){
-   			strcat(html,"<tr>");
-   		}
-        if(i > 3){
-            strcat(html,"</tr>");
-            strcat(msg, "<h3>Only 4 dog images are available, you requested more. Showing all four images. </h3> <br>");
-            break;
-        }
-   		strcat(html,"<td>");
-   		strcat(html,"<img src=\"");
-   		strcat(html,cwd);
-   		strcat(html,"/images/dog");
-   		char temp[3];
-   		sprintf(temp, "%d", i+1);
-   		strcat(html,temp);
-   		strcat(html,".jpeg\"></td>");
-
-   		if(i==num_dogs-1){
-   			strcat(html,"</tr>");
-   		}
-        flag = 1;
-   	}
-   	for(int i=0;i<num_cats;i++){
-   		if(i==0){
-   			strcat(html,"<tr>");
-   		}
-        if(i > 3){
-            strcat(html,"</tr>");
-            strcat(msg, "<h3>Only 4 cat images are available, you requested more. Showing all four images. </h3> <br>");
-            break;
-        }
-   		strcat(html,"<td>");
-   		strcat(html,"<img src=\"");
-   		strcat(html,cwd);
-   		strcat(html,"/images/cat");
-   		char temp[3];
-   		sprintf(temp, "%d", i+1);
-   		strcat(html,temp);
-   		strcat(html,".jpeg\"></td>");
-
-   		if(i==num_cats-1){
-   			strcat(html,"</tr>");
-   		}
-        flag = 1;
-   	}
-   	for(int i=0;i<num_cars;i++){
-   		if(i==0){
-   			strcat(html,"<tr>");
-   		}
-        if(i > 3){
-            strcat(html,"</tr>");
-            strcat(msg, "<h3>Only 4 car images are available, you requested more. Showing all four images. </h3> <br>");
-            break;
-        }
-   		strcat(html,"<td>");
-   		strcat(html,"<img src=\"");
-   		strcat(html,cwd);
-   		strcat(html,"/images/car");
-   		char temp[3];
-   		sprintf(temp, "%d", i+1);
-   		strcat(html,temp);
-   		strcat(html,".jpeg\"></td>");
-
-   		if(i==num_cars-1){
-   			strcat(html,"</tr>");
-   		}
-        flag = 1;
-   	}
-   	for(int i=0;i<num_trucks;i++){
-   		if(i==0){
-   			strcat(html,"<tr>");
-   		}
-        if(i > 3){
-            strcat(html,"</tr>");
-            strcat(msg, "<h3>Only 4 truck images are available, you requested more. Showing all four images. </h3> <br>");
-            break;
-        }
-   		strcat(html,"<td>");
-   		strcat(html,"<img src=\"");
-   		strcat(html,cwd);
-   		strcat(html,"/images/truck");
-   		char temp[3];
-   		sprintf(temp, "%d", i+1);
-   		strcat(html,temp);
-   		strcat(html,".jpeg\"></td>");
-
-   		if(i==num_trucks-1){
-   			strcat(html,"</tr>");
-   		}
-        flag = 1;
-   	}
-
-   	strcat(html,"</table>");
-    strcat(html,msg);
-    strcat(html,"</body></html>");
-
-    if(flag == 0){
-        strcpy(html,"<!DOCTYPE html><html><body><h1> Query doesn't have any returns. </h1></html></body>");
     }
-   	n = send(newSocket,html,strlen(html),0);
-   	strcpy(html,"<!DOCTYPE html><html><head><title>Assignment 1</title></head><body><h1> Here is the response of your query </h1><table>");
-   	num_dogs =0;
-   	num_trucks =0;
-   	num_cats =0;
-   	num_cars=0;
+
+    for(int i=0;i<num_dogs;i++){
+      char temp[3];
+      sprintf(temp, "%d", i+1);
+      strcat(path_name,"/images/dog");
+      strcat(path_name,temp);
+      strcat(path_name,".jpeg");
+      FILE *fs = fopen(path_name, "r");
+      bzero(sdbuf, 512); 
+      int fs_block_sz; 
+    //int success = 0;
+      while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
+      {
+        
+          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+          {
+              //printf("ERROR: Failed to send file %s.\n", fs_name);
+              break;
+          }
+          bzero(sdbuf, 512);
+        
+      }
+      fclose(fs);
+      bzero(sdbuf, 512);
+      strcpy(path_name,cwd);
+      sleep(2);
+    }
+
+
+    for(int i=0;i<num_cats;i++){
+      
+       char temp[3];
+      sprintf(temp, "%d", i+1);
+      strcat(path_name,"/images/cat");
+      strcat(path_name,temp);
+      strcat(path_name,".jpeg");
+      FILE *fs = fopen(path_name, "r");
+      bzero(sdbuf, 512); 
+      int fs_block_sz; 
+      
+    //int success = 0;
+      while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
+      {
+        
+          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+          {
+              //printf("ERROR: Failed to send file %s.\n", fs_name);
+              break;
+          }
+          bzero(sdbuf, 512);
+          
+      }
+
+      fclose(fs);
+      bzero(sdbuf, 512);
+      strcpy(path_name,cwd);  
+      sleep(2);
+    }
+
+
+    for(int i=0;i<num_cars;i++){
+       char temp[3];
+      sprintf(temp, "%d", i+1);
+      strcat(path_name,"/images/car");
+      strcat(path_name,temp);
+      strcat(path_name,".jpeg");
+      FILE *fs = fopen(path_name, "r");
+      bzero(sdbuf, 512); 
+      int fs_block_sz; 
+    //int success = 0;
+      while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
+      {
+        
+          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+          {
+              //printf("ERROR: Failed to send file %s.\n", fs_name);
+              break;
+          }
+          bzero(sdbuf, 512);
+          
+      }
+      fclose(fs);
+      bzero(sdbuf, 512);
+      strcpy(path_name,cwd);
+      sleep(2);
+    }
+
+
+    for(int i=0;i<num_trucks;i++){
+       char temp[3];
+      sprintf(temp, "%d", i+1);
+      strcat(path_name,"/images/truck");
+      strcat(path_name,temp);
+      strcat(path_name,".jpeg");
+      FILE *fs = fopen(path_name, "r");
+      bzero(sdbuf, 512); 
+      int fs_block_sz; 
+    //int success = 0;
+      while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
+      {
+        
+          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+          {
+              //printf("ERROR: Failed to send file %s.\n", fs_name);
+              break;
+          }
+          bzero(sdbuf, 512);
+          
+      }
+      fclose(fs);
+      bzero(sdbuf, 512);
+      strcpy(path_name,cwd);
+      sleep(2);
+    }
+
+    num_dogs =0;
+    num_trucks =0;
+    num_cats =0;
+    num_cars=0;
 }
   return 0;
 }
