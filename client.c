@@ -37,24 +37,26 @@ int main(){
   addr_size = sizeof serverAddr;
   connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);
 
-  /*---- Read the message from the server into the buffer ----*/
-
-  /*---- Print the received message ----*/
-
+  /*---- Read the query to be sent to the server and send it ----*/
   printf("please enter the Query\n");
   bzero(buffer,256);
   scanf("%[^\n]s",buffer );
+  printf("%s", buffer);
   n = send(clientSocket, buffer, strlen(buffer),0);
+
+  /*---- Write the results of the query into a file  ----*/
   bzero(buffer,256);
-  n = recv(clientSocket, html,4096,0);
+  n = recv(clientSocket, html, 4096, 0);
   fp = fopen("index.html", "w");
-   if (fp == NULL)
-    {
-      printf("File not found!\n");
-      return 0;
-    }
+  if (fp == NULL)
+  {
+    printf("File not found!\n");
+    return 0;
+  }
   fwrite(html, sizeof(char), strlen(html), fp);
   fclose(fp);
+
+  /*---- Open the browser to show the file received from server ----*/
   system("x-www-browser index.html");
   sleep(1);
   system("rm index.html");
