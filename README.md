@@ -1,6 +1,9 @@
 # CS252 Assignment 1
 Assignment 1 submission by team '3 Musketeers', consisting of 4 members -- Sayash, Navya, Abhishek and Vinayak
 
+###Server Response
+The server responds a html page containing the images tags as per the given Query. The Client then stores this html content in an index.html file, and renders the output in a browser.
+
 ### Displaying pictures of cats and dogs, cars and trucks
 A client can enter a query in any form, such as `4 dogs 2 cats` and the corresponding images will be displayed in a browser.
 
