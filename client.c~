@@ -48,7 +48,7 @@ int main(){
   addr_size = sizeof serverAddr;
   n=connect(clientSocket, (struct sockaddr *) &serverAddr, addr_size);
   char revbuf[512];
-//  printf("%d",n);
+  printf("%d",n);
   /*---- Read the query to be sent to the server and send it ----*/
   printf("please enter the Query\n");
   bzero(buffer,256);
