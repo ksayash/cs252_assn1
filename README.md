@@ -1,8 +1,8 @@
 # CS252 Assignment 1
 Assignment 1 submission by team '3 Musketeers', consisting of 4 members -- Sayash, Navya, Abhishek and Vinayak
 
-###Server Response
-The server responds a html page containing the images tags as per the given Query. The Client then stores this html content in an index.html file, and renders the output in a browser.
+### Server Response
+The Server sends the asked number of images to the client(file transfer), the client temporarily stores them inside his directory, forms the aesthetically pleasant html page, and renders it in the browser.
 
 ### Displaying pictures of cats and dogs, cars and trucks
 A client can enter a query in any form, such as `4 dogs 2 cats` and the corresponding images will be displayed in a browser.
@@ -20,3 +20,7 @@ These images are rendered based on the query and adapt dynamically to look good 
 - On local machine: 
 ```./client```
 (after compilation)  
+
+### Constraints-
+As written in the Assignment writeup, the number of images asked for any category can't be more than 4. It can be in range [0,4]. Sending query of more than 4 images will result in error, and we have not done error handling as of now, since assignment doesn't demand it. 
+
