@@ -11,13 +11,11 @@ A client can enter a query in any form, such as `4 dogs 2 cats` and the correspo
 These images are rendered based on the query and adapt dynamically to look good based on the number of images to be received.
 
 ### Dockerizing the server
-- Firstly, build the server image: 
+- Firstly, build the server image: <br>
 ```docker build -t server_image ./  ```
-- Run the server image: 
-  ```docker run -it -p 5432:5432 server_image bash```
-- In docker conatiner: 
-  ```./server```
-- On local machine: 
+- Run the server image: <br>
+  ```docker run -p 5432:5432 server_image ```
+- On local machine: <br>
 ```./client```
 (after compilation)  
 
