@@ -45,9 +45,9 @@ int main(){
 
   /*---- Listen on the socket, with 5 max connection requests queued ----*/
   if(listen(welcomeSocket,5)==0)
-    printf("I'm listening\n");
+  printf("I'm listening\n");
   else
-    printf("Error\n");
+  printf("Error\n");
 
   /*---- Accept call creates a new socket for the incoming connection ----*/
   addr_size = sizeof serverStorage;
@@ -57,11 +57,10 @@ int main(){
     bzero(buffer,256);
     newSocket = accept(welcomeSocket, (struct sockaddr *) &serverStorage, &addr_size);
 
-  /*---- Send message to the socket of the incoming connection ----*/
+    /*---- Send message to the socket of the incoming connection ----*/
     n = recv( newSocket,buffer,255,0 );
     token = strtok(buffer,delm);
     strcpy(prev_token,token);
-    int flag = 0;
     while( token != NULL ) {
       token = strtok(NULL, delm);
       if(token != NULL){
@@ -89,19 +88,19 @@ int main(){
       strcat(path_name,temp);
       strcat(path_name,".jpeg");
       FILE *fs = fopen(path_name, "r");
-      bzero(sdbuf, 512); 
-      int fs_block_sz; 
-    //int success = 0;
+      bzero(sdbuf, 512);
+      int fs_block_sz;
+      //int success = 0;
       while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
       {
-        
-          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
-          {
-              //printf("ERROR: Failed to send file %s.\n", fs_name);
-              break;
-          }
-          bzero(sdbuf, 512);
-        
+
+        if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+        {
+          //printf("ERROR: Failed to send file %s.\n", fs_name);
+          break;
+        }
+        bzero(sdbuf, 512);
+
       }
       fclose(fs);
       bzero(sdbuf, 512);
@@ -111,56 +110,56 @@ int main(){
 
 
     for(int i=0;i<num_cats;i++){
-      
-       char temp[3];
+
+      char temp[3];
       sprintf(temp, "%d", i+1);
       strcat(path_name,"/images/cat");
       strcat(path_name,temp);
       strcat(path_name,".jpeg");
       FILE *fs = fopen(path_name, "r");
-      bzero(sdbuf, 512); 
-      int fs_block_sz; 
-      
-    //int success = 0;
+      bzero(sdbuf, 512);
+      int fs_block_sz;
+
+      //int success = 0;
       while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
       {
-        
-          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
-          {
-              //printf("ERROR: Failed to send file %s.\n", fs_name);
-              break;
-          }
-          bzero(sdbuf, 512);
-          
+
+        if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+        {
+          //printf("ERROR: Failed to send file %s.\n", fs_name);
+          break;
+        }
+        bzero(sdbuf, 512);
+
       }
 
       fclose(fs);
       bzero(sdbuf, 512);
-      strcpy(path_name,cwd);  
+      strcpy(path_name,cwd);
       sleep(2);
     }
 
 
     for(int i=0;i<num_cars;i++){
-       char temp[3];
+      char temp[3];
       sprintf(temp, "%d", i+1);
       strcat(path_name,"/images/car");
       strcat(path_name,temp);
       strcat(path_name,".jpeg");
       FILE *fs = fopen(path_name, "r");
-      bzero(sdbuf, 512); 
-      int fs_block_sz; 
-    //int success = 0;
+      bzero(sdbuf, 512);
+      int fs_block_sz;
+      //int success = 0;
       while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
       {
-        
-          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
-          {
-              //printf("ERROR: Failed to send file %s.\n", fs_name);
-              break;
-          }
-          bzero(sdbuf, 512);
-          
+
+        if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+        {
+          //printf("ERROR: Failed to send file %s.\n", fs_name);
+          break;
+        }
+        bzero(sdbuf, 512);
+
       }
       fclose(fs);
       bzero(sdbuf, 512);
@@ -170,25 +169,25 @@ int main(){
 
 
     for(int i=0;i<num_trucks;i++){
-       char temp[3];
+      char temp[3];
       sprintf(temp, "%d", i+1);
       strcat(path_name,"/images/truck");
       strcat(path_name,temp);
       strcat(path_name,".jpeg");
       FILE *fs = fopen(path_name, "r");
-      bzero(sdbuf, 512); 
-      int fs_block_sz; 
-    //int success = 0;
+      bzero(sdbuf, 512);
+      int fs_block_sz;
+      //int success = 0;
       while((fs_block_sz = fread(sdbuf, sizeof(char), 512, fs))>0)
       {
-        
-          if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
-          {
-              //printf("ERROR: Failed to send file %s.\n", fs_name);
-              break;
-          }
-          bzero(sdbuf, 512);
-          
+
+        if(send(newSocket, sdbuf, fs_block_sz, 0) < 0)
+        {
+          //printf("ERROR: Failed to send file %s.\n", fs_name);
+          break;
+        }
+        bzero(sdbuf, 512);
+
       }
       fclose(fs);
       bzero(sdbuf, 512);
@@ -200,6 +199,6 @@ int main(){
     num_trucks =0;
     num_cats =0;
     num_cars=0;
-}
+  }
   return 0;
 }
