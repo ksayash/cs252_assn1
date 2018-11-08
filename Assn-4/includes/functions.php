@@ -18,6 +18,7 @@
  */
 
 include_once 'psl-config.php';
+include_once 'db_connect.php';
 
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name
@@ -108,6 +109,8 @@ function login($email, $password, $mysqli) {
         exit();
     }
 }
+
+
 
 function checkbrute($user_id, $mysqli) {
     // Get timestamp of current time
@@ -212,5 +215,66 @@ function esc_url($url) {
         return '';
     } else {
         return $url;
+    }
+}
+
+
+function userSuggest($keyword, $type){
+
+    if($type == 2){
+        $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+        if ($mysqli->connect_error) {
+            header("Location: ../error.php?err=internal db connection error");
+            exit();
+        }
+        $prep_stmt = "SELECT id FROM members WHERE username = ? LIMIT 1";
+        $stmt = $mysqli->prepare($prep_stmt);
+        if ($stmt) {
+            $stmt->bind_param('s', $keyword);
+            $stmt->execute();
+            $stmt->store_result();
+
+            if ($stmt->num_rows == 0) {
+                // A user with this email address already exists
+                return $keyword;
+            }
+            // userSuggest($keyword, 1);
+        } else {
+            $error_msg .= '<p class="error">Database error</p>';
+        }
+    }
+
+    $rand = 0;
+
+    do{
+        $n = substr($keyword,-1);
+        if(is_numeric($n))
+            $keyword = substr($keyword,0,-1);
+        }
+    while(is_numeric($n));
+
+    while (1) {
+        $rand = mt_rand(1,1000);
+        $keyword .= $rand;
+        $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+        if ($mysqli->connect_error) {
+            header("Location: ../error.php?err=internal db connection error");
+            exit();
+        }
+        $prep_stmt = "SELECT id FROM members WHERE username = ? LIMIT 1";
+        $stmt = $mysqli->prepare($prep_stmt);
+        if ($stmt) {
+            $stmt->bind_param('s', $keyword);
+            $stmt->execute();
+            $stmt->store_result();
+
+            if ($stmt->num_rows == 1) {
+                // A user with this email address already exists
+                continue;
+            }
+            return $keyword;
+        } else {
+            $error_msg .= '<p class="error">Database error</p>';
+        }
     }
 }

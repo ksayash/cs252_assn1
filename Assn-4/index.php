@@ -51,7 +51,7 @@ if (login_check($mysqli) == true) {
         </form>
         <p>If you don't have a login, please <a href="register.php">register</a></p>
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
-        <p> If you don't remember your password, please <a href="includes/forgot_pass.php"> reset. </p>
+        <p> If you don't remember your password, please <a href="forgot_pass.php"> reset. </p>
         <p>You are currently logged <?php echo $logged ?>.</p>
     </body>
 </html>

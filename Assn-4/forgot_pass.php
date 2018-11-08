@@ -1,7 +1,7 @@
 <?php
-include_once 'includes/db_connect.php';
+// include_once 'db_connect.php';
 include_once 'includes/functions.php';
-
+include_once 'includes/forgot.inc.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@ include_once 'includes/functions.php';
         }
         ?>
 
-        <form method="post" name="registration_form" action="includes/process_reset.php">
+        <form method="post" name="registration_form" action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>">
             Email: <input type="text" name="email" id="email" /><br>
             New Password: <input type="password"
                              name="password"
@@ -39,7 +39,7 @@ include_once 'includes/functions.php';
             Security Answer : <input id="security_ans" type="text" name="security_ans">
             <input type="button"
                    value="Register"
-                   onclick="return regformhash(this.form,
+                   onclick="return resetformhash(this.form,
                                    this.form.email,
                                    this.form.password,
                                    this.form.confirmpwd,

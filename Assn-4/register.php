@@ -24,6 +24,7 @@ include_once 'includes/functions.php';
         <meta charset="UTF-8">
         <title>Secure Login: Registration Form</title>
         <script type="text/JavaScript" src="js/sha512.js"></script>
+        <script type="text/JavaScript" src="js/pass.js"></script>
         <script type="text/JavaScript" src="js/forms.js"></script>
         <link rel="stylesheet" href="styles/main.css" />
     </head>
@@ -52,9 +53,11 @@ include_once 'includes/functions.php';
         <form method="post" name="registration_form" action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>">
             Username: <input type='text' name='username' id='username' /><br>
             Email: <input type="text" name="email" id="email" /><br>
+
             Password: <input type="password"
                              name="password"
-                             id="password"/><br>
+                             id="password" onkeypress="checkStrength()"/><br>
+            Strength : <span id = "pass-strength" > </span> <br>
             Confirm password: <input type="password"
                                      name="confirmpwd"
                                      id="confirmpwd" /><br>
@@ -66,7 +69,7 @@ include_once 'includes/functions.php';
                 <option value="Who is your childhood sports hero?">Who is your childhood sports hero?</option>
 
                       </select> <br>
-            Security Answer : <input id="security_ans" type="text" name="security_ans">
+            Security Answer : <input id="security_ans" type="text" name="security_ans"> <br>
             <input type="button"
                    value="Register"
                    onclick="return regformhash(this.form,

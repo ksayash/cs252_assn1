@@ -19,7 +19,7 @@
 
 include_once 'db_connect.php';
 include_once 'psl-config.php';
-
+include_once 'functions.php' ;
 $error_msg = "";
 
 if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
@@ -62,6 +62,27 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         }
     } else {
         $error_msg .= '<p class="error">Database error</p>';
+    }
+    if(empty($error_msg)){
+        $prep_stmt = "SELECT id FROM members WHERE username = ? LIMIT 1";
+        $stmt = $mysqli->prepare($prep_stmt);
+
+        if ($stmt) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $stmt->store_result();
+
+            if ($stmt->num_rows == 1) {
+                // A user with this email address already exists
+                $error_msg .= '<p class="error">A user with this username already exists.</p>';
+                $uname1 = userSuggest($username, 1);
+                $uname2 = userSuggest(explode("@",$email)[0], 2);
+                $uname3 = userSuggest($username, 1);
+                $error_msg .= "Try following usernames - <br> ${uname1}, ${uname2}, ${uname3}" ;
+            }
+        } else {
+            $error_msg .= '<p class="error">Database error</p>';
+        }
     }
 
     // TODO:
