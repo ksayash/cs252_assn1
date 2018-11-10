@@ -105,7 +105,7 @@ int main(){
       fclose(fs);
       bzero(sdbuf, 512);
       strcpy(path_name,cwd);
-      sleep(2);
+      sleep(5);
     }
 
 
@@ -136,7 +136,7 @@ int main(){
       fclose(fs);
       bzero(sdbuf, 512);
       strcpy(path_name,cwd);
-      sleep(2);
+      sleep(5);
     }
 
 
@@ -164,7 +164,7 @@ int main(){
       fclose(fs);
       bzero(sdbuf, 512);
       strcpy(path_name,cwd);
-      sleep(2);
+      sleep(5);
     }
 
 
@@ -192,7 +192,7 @@ int main(){
       fclose(fs);
       bzero(sdbuf, 512);
       strcpy(path_name,cwd);
-      sleep(2);
+      sleep(5);
     }
 
     num_dogs =0;

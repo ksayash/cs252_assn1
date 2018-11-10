@@ -298,7 +298,7 @@ int main(){
   fclose(fp);
   /*---- Open the browser to show the file received from server ----*/
   system("x-www-browser index.html");
-  sleep(2);
+  sleep(10);
   system("rm index.html");
   system("rm *.jpeg");
   return 0;
